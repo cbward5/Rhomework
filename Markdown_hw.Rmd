@@ -8,22 +8,9 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-## R Markdown
-
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
-
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
-
-```{r cars}
-summary(cars)
-```
-
-## Including Plots
-
-You can also embed plots, for example:
-
 ```{r pressure, echo=FALSE}
+
+##Weight and Hindfoot Plots 
 library(tidyverse)
 download.file("https://ndownloader.figshare.com/files/2292169",
               "data/portal_data_joined.csv")
@@ -32,12 +19,11 @@ surveys <- read_csv("data/portal_data_joined.csv")
 surveys_complete <- surveys %>%
   filter(!is.na(weight), !is.na(hindfoot_length), !is.na(sex),
          species_id != "")
-
+## Weight 
 ggplot(surveys_complete, aes(x=species_id, y = weight)) +
   geom_jitter(alpha = .1,color = "green") + geom_boxplot(alpha =.5)
-
+## Hindfoot Length
 ggplot(surveys_complete, aes(x=species_id, y = hindfoot_length)) +
   geom_jitter(alpha = .1,color = "red") + geom_boxplot(alpha =.5)
 ```
-#the first graph shows the average weights of each species where the second shows respective average hindfoot lengths. Comparing the two, there seems to be a small relationships between the weight and foot length. We attribute this to the relatively obvious notion that with greater mass comes greater "structures" to support the species' individuals. However, the data doesnt show all hindfoot lengths and even less individual weight values that skew the data in terms of making conclusive comparisons.
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+  The first graph shows the average weights of each species where the second shows respective average hindfoot lengths. Comparing the two, there seems to be a small relationships between the weight and foot length. We attribute this to the relatively obvious notion that with greater mass comes greater "structures" to support the species' individuals. However, the data doesnt show all hindfoot lengths and even less individual weight values that skew the data in terms of making conclusive comparisons.
