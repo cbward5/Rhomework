@@ -1,14 +1,34 @@
 library(tidyverse)
+library(gridExtra)
 download.file("https://ndownloader.figshare.com/files/2292169",
               "data/portal_data_joined.csv")
-surveys <- read_csv("data/portal_data_joined.csv")
+surveys <- read.csv("data/portal_data_joined.csv")
 
 surveys_complete <- surveys %>%
   filter(!is.na(weight), !is.na(hindfoot_length), !is.na(sex),
          species_id != "")
 
-ggplot(surveys_complete, aes(x=species_id, y = weight)) +
-  geom_jitter(alpha = .1,color = "blue") + geom_boxplot(alpha =.5)
+weightplot <- ggplot(surveys_complete, aes(x=species_id, y = weight)) +
+  geom_jitter(alpha = .1,color = "blue") + geom_boxplot(alpha =.5) +
+  xlab("Species ID")+ylab("Weight (kg)")
 
-ggplot(surveys_complete, aes(x=species_id, y = hindfoot_length)) +
-  geom_jitter(alpha = .1,color = "red") + geom_boxplot(alpha =.5)
+lengthplot <- ggplot(surveys_complete, aes(x=species_id, y = hindfoot_length)) +
+  geom_jitter(alpha = .1,color = "red") + geom_boxplot(alpha =.5) +
+  xlab("Species ID")+
+  ylab("Hindfoot Length (cm)")
+
+grid.arrange(weightplot,lengthplot)
+
+#need to do r-squared and p-values
+ggplot(surveys_complete, aes(x=weight, y = hindfoot_length)) +
+  geom_point(alpha = .05,color = "blue") + xlab("Weight (kg)")+
+  ylab("Hindfoot Length (cm)")
+
+mean_wl <- surveys_complete %>% group_by(species_id) %>%
+  summarize(mean_length = mean(hindfoot_length),
+            mean_weight = mean(weight))
+
+#need to do r-squared and p-values
+ggplot(mean_wl, aes(x=mean_weight, y=mean_length, color=species_id))+
+  geom_point()+xlab("Mean Weight (kg)")+ylab("Mean Hindfoot Length (cm)")
+
