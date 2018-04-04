@@ -1,0 +1,43 @@
+---
+title: "R Homework"
+author: "Connor Ward and Justyn Rivera"
+date: "3 April 2018"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+library(tidyverse)
+download.file("https://ndownloader.figshare.com/files/2292169",
+              "data/portal_data_joined.csv")
+surveys <- read_csv("data/portal_data_joined.csv")
+
+surveys_complete <- surveys %>%
+  filter(!is.na(weight), !is.na(hindfoot_length), !is.na(sex),
+         species_id != "")
+
+ggplot(surveys_complete, aes(x=species_id, y = weight)) +
+  geom_jitter(alpha = .1,color = "blue") + geom_boxplot(alpha =.5)
+
+ggplot(surveys_complete, aes(x=species_id, y = hindfoot_length)) +
+  geom_jitter(alpha = .1,color = "red") + geom_boxplot(alpha =.5)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
