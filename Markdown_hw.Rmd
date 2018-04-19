@@ -12,9 +12,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(gridExtra)
-download.file("https://ndownloader.figshare.com/files/2292169",
-              "data/portal_data_joined.csv")
-surveys <- read.csv("data/portal_data_joined.csv")
+#download.file("https://ndownloader.figshare.com/files/2292169",
+#              "data/portal_data_joined.csv")
+surveys <- read.csv("surveys(1).csv")
 
 surveys_complete <- surveys %>%
   filter(!is.na(weight), !is.na(hindfoot_length), !is.na(sex),
