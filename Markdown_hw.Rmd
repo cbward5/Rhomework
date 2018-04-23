@@ -5,6 +5,8 @@ date: "3 April 2018"
 output: html_document
 ---
 
+#Does weight affect hindfoot length?
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -22,26 +24,37 @@ surveys_complete <- surveys %>%
 
 weightplot <- ggplot(surveys_complete, aes(x=species_id, y = weight)) +
   geom_jitter(alpha = .1,color = "blue") + geom_boxplot(alpha =.5) +
-  xlab("Species ID")+ylab("Weight (kg)")
+  xlab("Species ID")+ylab("Weight (kg)") +  ggtitle("Individual Weight by Species")
 
 lengthplot <- ggplot(surveys_complete, aes(x=species_id, y = hindfoot_length)) +
   geom_jitter(alpha = .1,color = "red") + geom_boxplot(alpha =.5) +
-  xlab("Species ID")+
-  ylab("Hindfoot Length (cm)")
+  xlab("Species ID")+ylab("Hindfoot Length (cm)")+  ggtitle("Individual Hindfoot Length by Species")
+
 
 grid.arrange(weightplot,lengthplot)
 
-#need to do r-squared and p-values
 ggplot(surveys_complete, aes(x=weight, y = hindfoot_length)) +
   geom_point(alpha = .05,color = "blue") + xlab("Weight (kg)")+
-  ylab("Hindfoot Length (cm)")
+  ylab("Hindfoot Length (cm)")+ggtitle("Weight vs. Hindfoot Length of Individuals")
+
+
+weightlength.lm <- lm(weight ~ hindfoot_length, data=surveys_complete)
+#summary(weightlength.lm)
+#r-squared 0.4673
+#p 2.2e-16
 
 mean_wl <- surveys_complete %>% group_by(species_id) %>%
   summarize(mean_length = mean(hindfoot_length),
             mean_weight = mean(weight))
 
-#need to do r-squared and p-values
 ggplot(mean_wl, aes(x=mean_weight, y=mean_length, color=species_id))+
-  geom_point()+xlab("Mean Weight (kg)")+ylab("Mean Hindfoot Length (cm)")
+  geom_point()+xlab("Mean Weight (kg)")+ylab("Mean Hindfoot Length (cm)")+
+  ggtitle("Average Weight vs. Hindfoot Length  by Species")
+
+mean.lm <- lm(mean_weight ~ mean_length, data=mean_wl)
+#summary(mean.lm)
+#R-squared 0.5784
+#p 9.728e-06
 ```
-  The first graph shows the average weights of each species where the second shows respective average hindfoot lengths. Comparing the two, there seems to be a small relationships between the weight and foot length. We attribute this to the relatively obvious notion that with greater mass comes greater "structures" to support the species' individuals. However, the data doesnt show all hindfoot lengths and even less individual weight values that skew the data in terms of making conclusive comparisons.
+   
+   With the surveys data set, we created four plots to visualize relationships of given species between weight and hindfoot length. The first jitter plot contained weights of the individual animals grouped by each species and the second shows each individual hindfoot length also grouped together by the different species. With the two graphs lined up for a good visual, there seems to be a small relationships between the weight and hindfoot length for the different species but we will need additional graphs to provide a definite answer. We attribute this possibility to the relatively obvious notion that with greater mass comes greater "structures" to support the species' individuals. However, there are few intuitive interpretations of the first two due to the the data having gaps. There are missing entries for hindfoot lengths and even more left out individual weight values. This skewed the data in terms of making conclusive comparisons. Be that as it may, looking at the third graph, which plots the weights against the hindfoot lengths, our initial interpretation was relatively validated. Moving along the X-Axis, as weight values grow it would seem that there is a parallel growth in hindfoot lengths. Also, with a R squared value of 0.4673 and a low p-value of 2.2e-16, we know that statistically there is certainly a intermediate correlation between weight and hindfoot length with the limited data given, and we can reject the null hypothesis. With that being said, some of the larger weight values don't show equally increasing high hindfoot lengths, but we attribute this to the potential of an individual to continually gain weight but whose "structures" (i.e hindfoot lengths) stop growing after reaching a certain maturity. Lastly, the final graph takes the mean values of both weight and hindfoot length andr each species as a whole and plots them against each other, resulting in a more conclusive graph. Here, a gradual curve can be seen as average weights of all individuals in each species grow so do the average hindfoot lengths. With the averages, there was an increase in the R squared value up to 0.5784 and a larger p-value at 9.728e-06, meaning there was a fairly significant increase in correlation and still enough evidence to reject the null hypothesis. a Overall, we found that there is a correlation between increasing weight and respective hindfoot lengths, but more data/variables are needed to create a more complete interpretation.
