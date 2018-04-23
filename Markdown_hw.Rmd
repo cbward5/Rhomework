@@ -14,9 +14,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 library(tidyverse)
 library(gridExtra)
-#download.file("https://ndownloader.figshare.com/files/2292169",
-#              "data/portal_data_joined.csv")
-surveys <- read.csv("surveys(1).csv")
+download.file("https://ndownloader.figshare.com/files/2292169",
+              "data/portal_data_joined.csv")
+surveys <- read.csv("data/portal_data_joined.csv")
 
 surveys_complete <- surveys %>%
   filter(!is.na(weight), !is.na(hindfoot_length), !is.na(sex),
@@ -49,7 +49,7 @@ mean_wl <- surveys_complete %>% group_by(species_id) %>%
 
 ggplot(mean_wl, aes(x=mean_weight, y=mean_length, color=species_id))+
   geom_point()+xlab("Mean Weight (kg)")+ylab("Mean Hindfoot Length (cm)")+
-  ggtitle("Average Weight vs. Hindfoot Length  by Species")
+  ggtitle("Average Weight vs. Hindfoot Length by Species")
 
 mean.lm <- lm(mean_weight ~ mean_length, data=mean_wl)
 #summary(mean.lm)
