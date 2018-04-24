@@ -1,5 +1,2 @@
 # Rhomework
-# In this repository we had taken the species_complete document and picked two variables (weight and hindfoot length) and
-plotted the two in relation to species identity in two seperate graphs. We sought to find a coorelation between average weights
-and average hindfoot lengths of each species, and found that there was a slight relationship. However, with missing data 
-in both variables the data cannot be viewed as conclusive.  
+# In this repository we had taken the species_complete document and picked two variables (weight and hindfoot length). We have created four graphs each representing a different aspect of our analysis. The first two depict individual species against either weight or hindfoot lenght respectively. The third shows weights vs hindfoot lenghts serving as an actual visualization of the comparison of the first two plots. Lastly, the mean values for each species type were plotted in terms mean weight vs mean hindfoot length. We sought to find a coorelation between average weights and average hindfoot lengths of each species, and found that there was a slight relationship. However, with missing data in both variables the data cannot be viewed as conclusive.    
